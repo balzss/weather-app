@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useWeather } from '@/lib/hooks/use-weather' // Make sure this path is correct
-import { LargeWeatherCard, SmallWeatherCard } from '@/components/custom'
+import { useWeather } from '@/lib/hooks/use-weather'
+import { LargeWeatherCard, SmallWeatherCard, SearchBox, Loader } from '@/components/custom'
 
 export default function HomePage() {
   const [coordinates, setCoordinates] = useState<{ lat: number; lon: number } | null>(null)
@@ -48,7 +48,7 @@ export default function HomePage() {
     }
 
     if (isLoading) {
-      return <p className="text-center">Loading weather data...</p>
+      return <Loader text="Loading Weather Data..." />
     }
 
     if (isError) {
@@ -56,7 +56,6 @@ export default function HomePage() {
     }
 
     if (weatherData) {
-      console.log(weatherData.weather.daily)
       const { current, daily } = weatherData.weather
       const locationName = `${weatherData.location.name}, ${weatherData.location.country}`
 
@@ -99,8 +98,9 @@ export default function HomePage() {
   return (
     <main className="container mx-auto p-4 md:p-8">
       <div className="max-w-3xl mx-auto">
-        {/* Search Bar */}
-        <div className="mb-8"></div>
+        <div className="mb-8">
+          <SearchBox />
+        </div>
 
         {renderContent()}
       </div>
