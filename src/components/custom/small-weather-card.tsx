@@ -1,5 +1,5 @@
 import { Card } from '@/components/ui/card'
-import { getWeatherIcon } from '@/lib/utils'
+import { getWeatherInfo } from '@/lib/utils'
 
 type SmallWeatherCardProps = {
   weatherCode: number
@@ -9,14 +9,18 @@ type SmallWeatherCardProps = {
 }
 
 export function SmallWeatherCard({ weatherCode, date, maxTemp, minTemp }: SmallWeatherCardProps) {
-  const WeatherIcon = getWeatherIcon(weatherCode)
+  const { icon: WeatherIcon, label: weatherLabel } = getWeatherInfo(weatherCode)
   const dayLabel = new Date(date).toLocaleDateString('en-US', { weekday: 'short' })
   return (
-    <Card key={date} className="flex flex-col items-center p-4 min-w-[100px] flex-grow">
+    <Card
+      key={date}
+      className="flex flex-col items-center p-4 min-w-[130px] w-full flex-grow gap-3"
+    >
       <p className="font-semibold">{dayLabel}</p>
       <div className="text-4xl my-2">
         <WeatherIcon />
       </div>
+      <div className="text-muted-foreground text-sm">{weatherLabel}</div>
       <p className="text-sm">
         {Math.round(maxTemp)}° / {Math.round(minTemp)}°
       </p>

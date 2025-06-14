@@ -13,7 +13,6 @@ export default function HomePage() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          console.log({ position })
           setCoordinates({
             lat: position.coords.latitude,
             lon: position.coords.longitude,
@@ -57,16 +56,18 @@ export default function HomePage() {
     }
 
     if (weatherData) {
-      const { current_weather, daily } = weatherData.weather
-      const locationName = weatherData.location.name
+      console.log(weatherData.weather.daily)
+      const { current, daily } = weatherData.weather
+      const locationName = `${weatherData.location.name}, ${weatherData.location.country}`
 
       return (
         <>
           <LargeWeatherCard
-            weatherCode={current_weather.weathercode}
+            weatherCode={current.weather_code}
             locationName={locationName}
-            temperature={current_weather.temperature}
-            windSpeed={current_weather.windspeed}
+            temperature={current.temperature_2m}
+            windSpeed={current.wind_speed_10m}
+            humidity={current.relative_humidity_2m}
           />
           {locationError && (
             <p className="text-center text-red-500 m-2">
@@ -75,14 +76,14 @@ export default function HomePage() {
           )}
 
           <div className="mt-6 relative">
-            <h3 className="text-lg font-semibold mb-2">5-Day Forecast</h3>
-            <div className="flex overflow-x-auto gap-4 py-4 -mr-4 pr-4">
+            <h3 className="text-lg font-semibold">5-Day Forecast</h3>
+            <div className="flex overflow-x-auto gap-4 py-4 -mx-4 px-4">
               {daily.time.slice(0, 5).map((date: string, index: number) => {
                 return (
                   <SmallWeatherCard
                     date={date}
                     key={date}
-                    weatherCode={daily.weathercode[index]}
+                    weatherCode={daily.weather_code[index]}
                     minTemp={daily.temperature_2m_min[index]}
                     maxTemp={daily.temperature_2m_max[index]}
                   />

@@ -7,7 +7,7 @@ type WeatherProps = {
 
 const fetchWeather = async ({ latitude, longitude }: WeatherProps) => {
   const response = await fetch(
-    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=auto`
+    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min&current=relative_humidity_2m,temperature_2m,weather_code,wind_speed_10m`
   )
   if (!response.ok) {
     throw new Error('Weather data could not be fetched.')
@@ -20,7 +20,7 @@ const fetchLocationName = async ({ latitude, longitude }: WeatherProps) => {
     `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`,
     {
       headers: {
-        'User-Agent': 'MyWeatherApp/1.0 (hello@example.com)', // IMPORTANT: Change this to your app name and contact info
+        'User-Agent': 'BalazsWeatherApp/0.1 (balazs.saros@gmail.com)',
       },
     }
   )
@@ -43,10 +43,9 @@ export const useWeather = ({ latitude, longitude }: WeatherProps) => {
         throw new Error('Latitude or longitude is missing.')
       }
 
-      const [weatherData, locationData] = await Promise.all([
-        fetchWeather({ latitude, longitude }),
-        fetchLocationName({ latitude, longitude }),
-      ])
+      const weatherData = await fetchWeather({ latitude, longitude })
+      console.log(weatherData)
+      const locationData = await fetchLocationName({ latitude, longitude })
 
       return { weather: weatherData, location: locationData }
     },

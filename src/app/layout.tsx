@@ -3,7 +3,7 @@ import './globals.css'
 import Providers from './providers'
 
 export const metadata: Metadata = {
-  title: 'Weather App',
+  title: `Balazs' Weather App`,
   icons: '/weather-app/icon.png',
 }
 
