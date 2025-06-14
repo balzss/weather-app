@@ -4,6 +4,7 @@ import Providers from './providers'
 
 export const metadata: Metadata = {
   title: 'Weather App',
+  icons: '/weather-app/icon.png',
 }
 
 export default function RootLayout({
